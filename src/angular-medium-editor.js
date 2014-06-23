@@ -34,12 +34,13 @@ angular.module('angular-medium-editor', []).directive('mediumEditor', function (
         ctrl.editor = new MediumEditor(iElement, opts);
       });
       var onChange = function () {
+        var self = this;
         scope.$apply(function () {
           // If user cleared the whole text, we have to reset the editor because MediumEditor
           // lacks an API method to alter placeholder after initialization
           if (iElement.html() === '<p><br></p>' || iElement.html() === '') {
             opts.placeholder = placeholder;
-            this.editor = new MediumEditor(iElement, opts);
+            self.editor = new MediumEditor(iElement, opts);
           }
           ctrl.$setViewValue(iElement.html());
         });
@@ -59,7 +60,11 @@ angular.module('angular-medium-editor', []).directive('mediumEditor', function (
         
         iElement.html(ctrl.$isEmpty(ctrl.$viewValue) ? '' : ctrl.$viewValue);
         if (ctrl.$viewValue === "") {
+            opts.placeholder = placeholder;
            this.editor = new MediumEditor(iElement, opts);
+        }
+        else {
+          this.editor = new MediumEditor(iElement, opts);
         }
       };
     }
